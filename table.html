@@ -20,73 +20,27 @@
   </div>
 </header>
 
-<section class="container rounded-xl mx-auto mb-20 text-center py-40">
-  <script>
-    var table = [
-      {
-        'from': 'Adelaide',
-        'to': 'Brisbane',
-        'kms': 2045,
-      },
-      {
-        'from': 'Brisbane',
-        'to': 'Sydney',
-        'kms': 982,
-      },
-      {
-        'from': 'Sydney',
-        'to': 'Melbourne',
-        'kms': 872,
-      },
-      {
-        'from': 'Melbourne',
-        'to': 'Adelaide',
-        'kms': 1523,
-      },
-      {
-        'from': 'Brisbane',
-        'to': 'Adelaide',
-        'kms': 2045,
-      },
-      {
-        'from': 'Adelaide',
-        'to': 'Perth',
-        'kms': 2781,
-      },
-      {
-        'from': 'Perth',
-        'to': 'Adelaide',
-        'kms': 2781,
-      },
-      {
-        'from': 'Adelaide',
-        'to': 'Sydney',
-        'kms': 982,
-      },
-      {
-        'from': 'Sydney',
-        'to': 'Melbourne',
-        'kms': 872,
-      }
-    ];
-  </script>
-  <div x-data="FlightTable(table)" class="flow-root mt-8">
-    <div class="filters flex">
-      <div class="flex items-center justify-between">
-        <div class="flex items-center space-x-2">
-          <label for="from" class="text-gray-700">Départ</label>
-          <select id="from" name="from" x-model="from" class="w-24">
-            <option value="">Adelaide</option>
-            <option value="">Brisbane</option>
-            <option value="">Sydney</option>
-            <option value="">Melbourne</option>
-            <option value="">Adelaide</option>
-            <option value="">Perth</option>
-            <option value="">Adelaide</option>
-            <option value="">Sydney</option>
-            <option value="">Melbourne</option>
-          </select>
-        </div>
+<section class="container rounded-xl mx-auto mb-20 text-center pt-8">
+  <div x-data="FlightTable" class="flow-root max-w-6xl mx-auto">
+
+    <div class="flex items-center space-x-4 mb-6">
+      <div class="flex items-center space-x-2">
+        <label for="from" class="text-gray-700">From:</label>
+        <select id="from" name="from" x-model="from" class="w-42" @change="filterTable">
+          <option value="">Select a value</option>
+          <template x-for="from in fromValues">
+            <option :value="from" x-text="from"></option>
+          </template>
+        </select>
+      </div>
+      <div class="flex items-center space-x-2">
+        <label for="to" class="text-gray-700">To:</label>
+        <select id="to" name="from" x-model="to" class="w-42" @change="filterTable">
+          <option value="">Select a value</option>
+          <template x-for="to in toValues">
+            <option :value="to" x-text="to"></option>
+          </template>
+        </select>
       </div>
     </div>
     <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -105,6 +59,11 @@
                 <td x-text="flight.from" class="whitespace-nowrap py-4 pl-4 pr-3 text-sm sm:pl-0"></td>
                 <td x-text="flight.to" class="whitespace-nowrap px-3 py-4 text-sm text-gray-500"></td>
                 <td x-text="flight.kms + ' kms'" class="whitespace-nowrap px-3 py-4 text-sm text-gray-500"></td>
+              </tr>
+            </template>
+            <template x-if="datas.length === 0">
+              <tr>
+                <td colspan="3" class="px-3 py-4 text-sm text-gray-500">No data</td>
               </tr>
             </template>
           </tbody>
