@@ -1,8 +1,15 @@
 export default function Menu() {
     return {
         currentMenuId: 0,
+        menuOpen: false,
         init() {
             this.assignIdsToAllSubMenus();
+        },
+        toggleMenu() {
+            this.menuOpen = !this.menuOpen;
+        },
+        isMenuOpen() {
+            return window.matchMedia('(min-width: 768px)').matches || this.menuOpen;
         },
         assignIdsToAllSubMenus() {
             let subMenuId = 1;
@@ -12,11 +19,20 @@ export default function Menu() {
                 subMenuId++;
             });
         },
-        isOpen() {
+        isMenuItemOpen() {
             return this.currentMenuId === this.getSubMenuIdFromElement();
         },
-        openMenu() {
+        openMenuItem(event) {
+            if (event.type === 'click' && window.matchMedia('(min-width: 768px)').matches) {
+                return;
+            }
             this.currentMenuId = this.getCurrentSubMenuId();
+        },
+        closeMenuItems(event) {
+            if (window.matchMedia('(max-width: 767px)').matches) {
+                return;
+            }
+            this.currentMenuId = 0;
         },
         getSubMenuIdFromElement(){
             return parseInt(this.$el.dataset.subMenuId) || 0;

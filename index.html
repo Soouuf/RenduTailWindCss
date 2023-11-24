@@ -5,28 +5,66 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Page HTML - Utilisation de TailwindCSS</title>
 </head>
-<body class="font-sans antialiased text-gray-900 leading-normal tracking-wider bg-cover">
+<body class="font-sans antialiased text-gray-900 leading-normal tracking-wider bg-cover pt-[100px]">
 <!-- Header -->
-<header class="container mx-auto px-6">
-    <div class="p-2 mt-0 w-full z-10 top-0">
-        <div class="container mx-auto flex flex-wrap items-center">
-            <div class="flex w-full md:w-1/2 justify-center md:justify-start text-white">
+<header
+    class="container mx-auto px-6 py-4 fixed z-30 top-0 inset-x-0 bg-white transition-all"
+>
+    <div class="p-2 mt-0 w-full z-10 top-0" x-data="Menu">
+        <div class="container mx-auto flex flex-wrap justify-between items-center">
+            <div class="flex md:w-1/2 justify-center md:justify-start text-white">
                 <a class="text-white no-underline hover:text-white hover:no-underline" href="#">
                     <img class="h-8 w-auto" src="./public/logo.svg" alt="Logo">
                 </a>
             </div>
-            <nav class="flex w-full pt-2 content-center justify-between md:w-1/2 md:justify-end">
+            <div class="relative z-50 w-10 h-10 md:hidden" @click="toggleMenu">
+                <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke-width="1.5"
+                        stroke="currentColor"
+                        class="w-6 h-6 absolute transition top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+                        :class="isMenuOpen() ? 'rotate-45 mt-0' : ' -mt-1'"
+                >
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 12h-15"/>
+                </svg>
+                <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke-width="1.5"
+                        stroke="currentColor"
+                        class="w-6 h-6 absolute transition top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+                        :class="isMenuOpen() ? '-rotate-45 mt-0' : 'mt-1'"
+                >
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 12h-15"/>
+                </svg>
+
+            </div>
+            <nav
+                    x-show="isMenuOpen"
+                    x-transition:enter="transition-transform ease-out duration-300"
+                    x-transition:enter-start="-translate-x-full"
+                    x-transition:enter-end="translate-0"
+                    x-transition:leave="transition-transform ease-in duration-300"
+                    x-transition:leave-start="translate-x-0"
+                    x-transition:leave-end="-translate-x-full"
+                    class="transition fixed inset-0 h-full z-40 bg-white shadow-lg ring-1 ring-gray-900/5
+                        flex w-full pt-2 content-center justify-between
+                        md:shadow-none md:ring-0 md:static  md:w-1/2 md:justify-end"
+                    x-cloak
+            >
                 <ul
-                    x-data="Menu"
-                    class="w-full list-reset flex flex-col items-center justify-center md:flex-row md:justify-between md:flex-1"
+                        class="w-full list-reset flex flex-col items-center justify-center md:flex-row md:justify-between md:flex-1"
                 >
                     <li class="mr-3">
                         <a class="inline-block py-2 px-4 no-underline" href="#">
                             Accueil
                         </a>
                     </li>
-                    <li class="mr-3">
-                        <div class="inline-flex items-center py-2 px-4 no-underline">
+                    <li class="mr-3 relative">
+                        <div class="inline-flex items-center py-2 px-4 no-underline" @mouseover="openMenuItem">
                             <span href="#">Services</span>
                             <svg
                                     @click="openMenu"
@@ -35,32 +73,44 @@
                                     viewBox="0 0 24 24"
                                     stroke-width="1.5"
                                     stroke="currentColor"
-                                    class="ml-2 p-2 w-10 h-10 md:p-0 w-4 md:h-4"
+                                    class="ml-2 p-2 w-10 h-10 md:p-0 md:w-4 md:h-4"
                             >
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/>
                             </svg>
                         </div>
-                        <ul class="sub-menu" :class="isOpen() ? 'show' : 'hidden'" x-transition x-cloak>
+                        <ul
+                                class="sub-menu bg-white text-sm leading-6 z-10 md:absolute md:left-1/2 md:mt-2 md:w-screen md:max-w-max md:-translate-x-1/2 md:p-4 md:rounded-md md:shadow-lg md:ring-1 md:ring-gray-900/5"
+                                @mouseleave="closeMenuItems"
+                                :class="isMenuItemOpen() ? 'show' : 'hidden'"
+                                x-transition
+                                x-cloak
+                        >
                             <li><a href="#">Sous-menu 1</a></li>
                             <li><a href="#">Sous-menu 2</a></li>
                         </ul>
                     </li>
-                    <li class="mr-3">
-                        <div class="inline-flex items-center py-2 px-4 no-underline">
+                    <li class="mr-3 relative">
+                        <div class="inline-flex items-center py-2 px-4 no-underline" @mouseover="openMenuItem">
                             <a href="#">À propos</a>
                             <svg
-                                @click="openMenu"
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke-width="1.5"
-                                stroke="currentColor"
-                                class="ml-2 p-2 w-10 h-10 md:p-0 w-4 md:h-4"
+                                    @click="openMenu"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke-width="1.5"
+                                    stroke="currentColor"
+                                    class="ml-2 p-2 w-10 h-10 md:p-0 md:w-4 md:h-4"
                             >
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/>
                             </svg>
                         </div>
-                        <ul class="sub-menu" :class="isOpen() ? 'show' : 'hidden'">
+                        <ul
+                                class="sub-menu bg-white text-sm leading-6 z-10 md:absolute md:left-1/2 md:mt-2 md:w-screen md:max-w-max md:-translate-x-1/2 md:p-4 md:rounded-md md:shadow-lg md:ring-1 md:ring-gray-900/5"
+                                @mouseleave="closeMenuItems"
+                                :class="isMenuItemOpen() ? 'show' : 'hidden'"
+                                x-transition
+                                x-cloak
+                        >
                             <li><a href="#">Sous-menu 1</a></li>
                             <li><a href="#">Sous-menu 2</a></li>
                         </ul>
