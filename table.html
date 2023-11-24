@@ -21,13 +21,13 @@
 </header>
 
 <section class="container rounded-xl mx-auto mb-20 text-center pt-8">
-  <div x-data="FlightTable" class="flow-root max-w-6xl mx-auto">
+  <div x-data="FlightTable('./public/data.json')" class="flow-root max-w-6xl mx-auto">
 
     <div class="flex items-center mb-6 justify-between">
       <div class="flex items-center space-x-4">
         <div class="flex items-center space-x-2">
           <label for="from" class="text-gray-700 font-bold">From:</label>
-          <select id="from" name="from" x-model="from" class="w-42" @change="filterTable">
+          <select id="from" name="from" x-model="filter.from" data-filter-value="from" data-filter-compare="equal" class="w-42" @change="filterTable">
             <option value="">Select a value</option>
             <template x-for="from in fromValues">
               <option :value="from" x-text="from"></option>
@@ -36,7 +36,7 @@
         </div>
         <div class="flex items-center space-x-2">
           <label for="to" class="text-gray-700 font-bold">To:</label>
-          <select id="to" name="from" x-model="to" class="w-42" @change="filterTable">
+          <select id="to" name="from" x-model="filter.to" data-filter-value="to" data-filter-compare="equal" @change="filterTable">
             <option value="">Select a value</option>
             <template x-for="to in toValues">
               <option :value="to" x-text="to"></option>
@@ -47,11 +47,11 @@
       <div class="flex items-center space-x-4">
         <div class="flex items-center space-x-2">
           <label for="to" class="text-gray-700 font-bold">Distance min:</label>
-          <input type="number" id="distance-min" x-model="distanceMin" class="w-24" @keyup="filterTable">
+          <input type="number" id="distance-min" x-model="filter.kmMin" data-filter-value="kms" data-filter-compare="greaterThanOrEqual" class="w-24" value="0" @keyup="filterTable">
         </div>
         <div class="flex items-center space-x-2">
           <label for="to" class="text-gray-700 font-bold">Distance max:</label>
-          <input type="number" id="distance-max" x-model="distanceMax" class="w-24" @keyup="filterTable">
+          <input type="number" id="distance-max" x-model="filter.kmMax" data-filter-value="kms" data-filter-compare="lessThanOrEqual" class="w-24" value="10000" @keyup="filterTable">
         </div>
       </div>
     </div>
