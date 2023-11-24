@@ -4,8 +4,14 @@ export default function Menu() {
         menuOpen: false,
         init() {
             this.assignIdsToAllSubMenus();
+            window.addEventListener('resize', this.refreshVars);
+        },
+        refreshVars() {
+            this.currentMenuId = 0;
+            this.menuOpen = window.matchMedia('(min-width: 768px)').matches;
         },
         toggleMenu() {
+            console.log(this.menuOpen);
             this.menuOpen = !this.menuOpen;
         },
         isMenuOpen() {
@@ -23,7 +29,10 @@ export default function Menu() {
             return this.currentMenuId === this.getSubMenuIdFromElement();
         },
         openMenuItem(event) {
-            if (event.type === 'click' && window.matchMedia('(min-width: 768px)').matches) {
+            if (
+                (event.type === 'click' && window.matchMedia('(min-width: 768px)').matches)
+                || (event.type === 'mouseover' && window.matchMedia('(max-width: 767px)').matches)
+            ) {
                 return;
             }
             this.currentMenuId = this.getCurrentSubMenuId();

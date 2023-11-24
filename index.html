@@ -5,12 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Page HTML - Utilisation de TailwindCSS</title>
 </head>
-<body class="font-sans antialiased text-gray-900 leading-normal tracking-wider bg-cover pt-[100px]">
-<!-- Header -->
+<body class="font-sans antialiased text-gray-900 leading-normal tracking-wider bg-cover pt-[120px]">
 <header
-    class="container mx-auto px-6 py-4 fixed z-30 top-0 inset-x-0 bg-white transition-all"
+    x-data="{ scrollHeader: false }"
+    :class="{ 'py-0 shadow-lg ring-1 ring-gray-900/5' : scrollHeader }"
+    @scroll.window="scrollHeader = window.pageYOffset > 40"
+    class="w-full px-6 py-6 fixed z-30 top-0 inset-x-0 bg-white transition-all"
 >
-    <div class="p-2 mt-0 w-full z-10 top-0" x-data="Menu">
+    <div class="container mx-auto p-2 mt-0 w-full z-10 top-0" x-data="Menu" x-on:resize.window="refreshVars">
         <div class="container mx-auto flex flex-wrap justify-between items-center">
             <div class="flex md:w-1/2 justify-center md:justify-start text-white">
                 <a class="text-white no-underline hover:text-white hover:no-underline" href="#">
@@ -67,7 +69,7 @@
                         <div class="inline-flex items-center py-2 px-4 no-underline" @mouseover="openMenuItem">
                             <span href="#">Services</span>
                             <svg
-                                    @click="openMenu"
+                                    @click="openMenuItem"
                                     xmlns="http://www.w3.org/2000/svg"
                                     fill="none"
                                     viewBox="0 0 24 24"
@@ -93,7 +95,7 @@
                         <div class="inline-flex items-center py-2 px-4 no-underline" @mouseover="openMenuItem">
                             <a href="#">À propos</a>
                             <svg
-                                    @click="openMenu"
+                                    @click="openMenuItem"
                                     xmlns="http://www.w3.org/2000/svg"
                                     fill="none"
                                     viewBox="0 0 24 24"
@@ -201,7 +203,7 @@
                     <img :src="img.src" class="w-full absolute z-10 inset-0">
                 </div>
             </template>
-            <div class="absolute z-30 bottom-4 inset-x-0 inline-flex justify-center gap-2">
+            <div class="absolute z-20 bottom-4 inset-x-0 inline-flex justify-center gap-2">
                 <template x-for="img in images">
                     <div
                             class="rounded-full w-4 h-4 cursor-pointer"
