@@ -5,7 +5,11 @@ export default {
       'src/**/*.{css,js}',
   ],
   theme: {
-    extend: {},
+      fontFamily: {
+        'sans': ['Wagon'],
+        'mono': ['Chillax']
+      },
+      extend: {}
   },
   plugins: [
       require('@tailwindcss/aspect-ratio'),
